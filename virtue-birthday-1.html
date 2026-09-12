@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Virtue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6FA0;
+    --yellow: #FFC94D;
+    --teal: #3FBFB0;
+    --purple: #8B7FD9;
+    --cream: #FFF6F0;
+    --ink: #33294D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Quicksand', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, .display {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 40px 28px;
+  }
+
+  .hero .eyebrow {
+    font-size: 17px;
+    color: var(--purple);
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 11vw, 68px);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--pink);
+    text-shadow: 3px 3px 0 var(--yellow);
+    margin-bottom: 18px;
+  }
+
+  .hero p {
+    font-size: 19px;
+    line-height: 1.6;
+    max-width: 420px;
+    font-weight: 500;
+  }
+
+  .scroll-cue {
+    margin-top: 50px;
+    font-size: 14px;
+    color: var(--purple);
+    font-weight: 600;
+    opacity: 0.75;
+  }
+
+  .scroll-cue svg { display: block; margin: 10px auto 0; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  /* SECTIONS */
+  section {
+    padding: 70px 0;
+    position: relative;
+  }
+
+  .divider {
+    width: 100%;
+    height: 40px;
+    display: block;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    background: rgba(63, 191, 176, 0.12);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  section h2 {
+    font-size: clamp(28px, 6vw, 38px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 22px;
+    line-height: 1.15;
+  }
+
+  section p {
+    font-size: 17px;
+    line-height: 1.75;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  section p.highlight {
+    color: var(--purple);
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  /* WHO YOU ARE - word cloud */
+  .qualities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  .qualities span {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 999px;
+    color: white;
+  }
+
+  .qualities span:nth-child(6n+1) { background: var(--pink); }
+  .qualities span:nth-child(6n+2) { background: var(--teal); }
+  .qualities span:nth-child(6n+3) { background: var(--purple); }
+  .qualities span:nth-child(6n+4) { background: var(--yellow); color: var(--ink); }
+  .qualities span:nth-child(6n+5) { background: var(--pink); }
+  .qualities span:nth-child(6n+6) { background: var(--teal); }
+
+  /* INTERACTIVE BUTTON */
+  .love-box {
+    text-align: center;
+    padding: 50px 28px;
+    background: linear-gradient(180deg, rgba(255,111,160,0.08), rgba(139,127,217,0.08));
+    border-radius: 32px;
+    margin: 20px 0;
+  }
+
+  .love-box p#loveText {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 460px;
+    margin: 0 auto 24px;
+    line-height: 1.4;
+    transition: opacity 0.25s ease;
+  }
+
+  button#loveBtn {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    background: var(--pink);
+    border: none;
+    padding: 16px 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #d94f81;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  button#loveBtn:active {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #d94f81;
+  }
+
+  /* CLOSING */
+  .closing {
+    text-align: center;
+    padding: 90px 28px 100px;
+  }
+
+  .closing h2 {
+    color: var(--pink);
+    font-size: clamp(30px, 7vw, 44px);
+  }
+
+  .signature {
+    margin-top: 36px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 24px;
+    color: var(--purple);
+    font-weight: 700;
+  }
+
+  .hearts-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .hearts-row svg { width: 22px; height: 22px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue svg { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="hero">
+  <div class="eyebrow">for Virtue Alagha</div>
+  <h1 class="display">Happy Birthday,<br>Virtue!</h1>
+  <p>A whole page, just for you, from someone who is endlessly grateful you exist.</p>
+  <div class="scroll-cue">
+    keep scrolling
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B7FD9" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="tag">2024</div>
+    <h2>The day I met you</h2>
+    <p>I remember thinking, wait, is this the small, slim girl? Because you looked like you'd blow away in the wind, just like me. You were my friend's roommate, and I had no idea that day would turn into one of the best friendships of my life.</p>
+    <p>But what I really remember is what you said to the whole room, the very first day. You looked around and said, "are we not sisters?" Like it was already decided. Like all of us in that room belonged to each other. I didn't know it yet, but that was the moment everything started.</p>
+  </section>
+
+  <section>
+    <div class="tag">who you are</div>
+    <h2>Every side of you I love</h2>
+    <p>You are loving. Caring. Soft, in the way that makes people feel safe around you. And beautiful, inside and out. But you are also nobody's fool, if someone gives you nonsense, you will tell them straight, no sugarcoating. That balance is rare.</p>
+    <div class="qualities">
+      <span>loving</span>
+      <span>caring</span>
+      <span>soft-hearted</span>
+      <span>no-nonsense</span>
+      <span>smart</span>
+      <span>resilient</span>
+      <span>never gives up</span>
+      <span>child of God</span>
+    </div>
+    <p>And more than anything, you love God, and you want everyone around you to know Him too. That's not a small thing. That's who you are at the root.</p>
+  </section>
+
+  <section>
+    <div class="tag">this year</div>
+    <h2>The day you didn't know I needed you</h2>
+    <p>For a long time, I prayed and asked God for good friends. Real ones. And I can say, without doubt, that you are an answer to that prayer.</p>
+    <p>There was a day this year when I was down. Not just tired, actually down. I hadn't said a word to anyone. And out of nowhere, I got a message from you asking me to send you a prayer request, something you could carry to God for me. You had no idea what I was going through. You just felt to ask.</p>
+    <p class="highlight">That's how intentional you are with the people you love. And I love you for it.</p>
+  </section>
+
+  <div class="love-box">
+    <p id="loveText">Tap the button for one more thing I love about you.</p>
+    <button id="loveBtn" onclick="cycleLove()">tell me more</button>
+  </div>
+
+  <div class="closing">
+    <h2>Happy birthday, my sister.</h2>
+    <p style="margin-top: 18px;">I hope this year holds everything you've been praying for, and things you haven't even thought to ask for yet. Thank you for choosing me as a sister that day, and for every day since.</p>
+    <div class="signature">With so much love, Oma</div>
+    <div class="hearts-row">
+      <svg viewBox="0 0 24 24" fill="#FF6FA0"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2.6 5 6 5c2 0 3.5 1.1 4.5 2.4C11.5 6.1 13 5 15 5c3.4 0 5.5 3.4 4 6.7-2.5 4.7-10 9.3-10 9.3z"/></svg>
+      <svg viewBox="0 0 24 24" fill="#FFC94D"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2.6 5 6 5c2 0 3.5 1.1 4.5 2.4C11.5 6.1 13 5 15 5c3.4 0 5.5 3.4 4 6.7-2.5 4.7-10 9.3-10 9.3z"/></svg>
+      <svg viewBox="0 0 24 24" fill="#3FBFB0"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2.6 5 6 5c2 0 3.5 1.1 4.5 2.4C11.5 6.1 13 5 15 5c3.4 0 5.5 3.4 4 6.7-2.5 4.7-10 9.3-10 9.3z"/></svg>
+      <svg viewBox="0 0 24 24" fill="#8B7FD9"><path d="M12 21s-7.5-4.6-10-9.3C.5 8.4 2.6 5 6 5c2 0 3.5 1.1 4.5 2.4C11.5 6.1 13 5 15 5c3.4 0 5.5 3.4 4 6.7-2.5 4.7-10 9.3-10 9.3z"/></svg>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // One orchestrated confetti burst on load, then settles.
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#FF6FA0', '#FFC94D', '#3FBFB0', '#8B7FD9'];
+  const pieces = [];
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = prefersReduced ? 0 : 70;
+
+  for (let i = 0; i < count; i++) {
+    pieces.push({
+      x: Math.random() * W,
+      y: -20 - Math.random() * H * 0.5,
+      w: 6 + Math.random() * 6,
+      h: 8 + Math.random() * 8,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: 1.5 + Math.random() * 2.5,
+      drift: (Math.random() - 0.5) * 1.5,
+      rot: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 6
+    });
+  }
+
+  let frame = 0;
+  const maxFrames = 420; // ~7s at 60fps, then stop drawing
+
+  function draw() {
+    frame++;
+    ctx.clearRect(0, 0, W, H);
+    pieces.forEach(p => {
+      p.y += p.speed;
+      p.x += p.drift;
+      p.rot += p.rotSpeed;
+      if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (frame < maxFrames) {
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, W, H);
+    }
+  }
+  if (!prefersReduced) requestAnimationFrame(draw);
+
+  // Interactive "tell me more" cycling messages
+  const loveLines = [
+    "You make people feel like they belong the moment they meet you, the way you did with me that very first day.",
+    "You pray for people before they even ask. That's not common, Virtue.",
+    "Your softness never once made you weak. If anything, it makes you harder to shake.",
+    "You call people sisters and actually mean it, with your whole chest.",
+    "God knew exactly what He was doing when He placed you in my life.",
+    "You don't just love God quietly, you want everyone around you to know Him too.",
+    "Happy birthday, again. I'm not done being grateful for you."
+  ];
+  let loveIndex = 0;
+  function cycleLove() {
+    const el = document.getElementById('loveText');
+    el.style.opacity = 0;
+    setTimeout(() => {
+      loveIndex = (loveIndex + 1) % loveLines.length;
+      el.textContent = loveLines[loveIndex];
+      el.style.opacity = 1;
+    }, 250);
+  }
+</script>
+
+</body>
+</html>
